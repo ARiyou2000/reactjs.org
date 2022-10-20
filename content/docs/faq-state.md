@@ -47,6 +47,24 @@ handleSomething() {
 }
 ```
 
+if you are using functional components and hooks:
+
+```jsx
+const [count, setCount] = useState(0);
+
+const incrementCount = () => {
+  // Note: this will *not* work as intended.
+  setCount(count + 1);
+}
+
+const handleSomething = () => {
+  // `count` will starts at 0.
+  incrementCount();
+  incrementCount();
+  incrementCount();
+}
+```
+
 See below for how to fix this problem.
 
 ### How do I update state with values that depend on the current state? {#how-do-i-update-state-with-values-that-depend-on-the-current-state}
@@ -72,6 +90,25 @@ handleSomething() {
   this.incrementCount();
 
   // If you read `this.state.count` now, it would still be 0.
+  // But when React re-renders the component, it will be 3.
+}
+```
+
+for functional component and hooks:
+
+```jsx
+const [count, setCount] = useState(0);
+
+const incrementCount = () => {
+  setCount((count) => { return count + 1 });
+}
+
+const handleSomething = () => {
+  // `count` will starts at 0.
+  incrementCount();
+  incrementCount();
+  incrementCount();
+  // If you read `count` now, it would still be 0.
   // But when React re-renders the component, it will be 3.
 }
 ```
